@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  color: white;
+}
+
+.under_600 {
+  background-color: blue;
+}
+
+.over_600 {
+  background-color: purple;
+}
+
+.over_800 {
+  background-color: yellow;
+}

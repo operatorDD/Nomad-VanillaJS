@@ -161,4 +161,8 @@ function init() {
 
 init();
 
-
+/*
+HTMLレンダリング順序
+https://qiita.com/mikimhk/items/7cfbd6c94d0f3d7aa51f
+https://jeong-pro.tistory.com/90
+ */
