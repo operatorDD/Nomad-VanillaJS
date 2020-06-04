@@ -75,3 +75,90 @@ function handleClick() {
 title.addEventListener("click", handleClick);
 
 
+// 2.5 if, else, and, or
+
+// && : and, || : or
+if (condition) {
+  'trueの場合';
+} else {
+  'falseの場合';
+}
+
+if (condition) {
+  'conditionがtrue';
+} else　if(condition2) {
+  'conditionがfalse && condition2がtrue';
+} else {
+  'condtionがfalse && condition2がfalse'
+}
+
+// prompt -> very very old. do not use it
+
+
+// 2.6 DOM - if else - Function practice
+
+const title = document.querySelector("#title");
+
+const BASE_COLOR = "rgb(52, 73, 94)";
+const OTHER_COLOR = "rgb(127, 140, 141)";
+
+function handleClick() {
+  const currentColor = title.style.color;
+  if (currentColor === BASE_COLOR) {
+    console.log(currentColor);
+    title.style.color = OTHER_COLOR;
+  } else {
+    console.log(currentColor);
+    title.style.color = BASE_COLOR;
+  }
+}
+
+function init() {
+  title.style.color = BASE_COLOR;
+  title.addEventListener("click", handleClick);
+  title.addEventListener("mouseenter", handleClick);
+}
+
+init();
+
+function handleOffline() {
+  console.log("じゃねー　");
+}
+
+function handleOnline() {
+  console.log("おはよう");
+}
+window.addEventListener("offline", handleOffline);
+window.addEventListener("online", handleOnline);
+
+
+// 2.7 DOM - if else - Function practive part Two
+
+import "./styles.css";
+
+const title = document.querySelector("#title");
+
+const CLICKED_CLASS = "clicked";
+
+function handleClick() {
+  const hasClass = title.classList.contains(CLICKED_CLASS);
+  // const currentClass = title.className;
+  if (hasClass) {
+    title.classList.remove(CLICKED_CLASS);
+  } else {
+    title.classList.add(CLICKED_CLASS);
+  }
+}
+
+// toggle = 引数で私たクラスが存在すればremove, なければadd
+function handleClick() {
+  title.classList.toggle(CLICKED_CLASS);
+}
+
+function init() {
+  title.addEventListener("click", handleClick);
+}
+
+init();
+
+
