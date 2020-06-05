@@ -166,3 +166,59 @@ HTMLレンダリング順序
 https://qiita.com/mikimhk/items/7cfbd6c94d0f3d7aa51f
 https://jeong-pro.tistory.com/90
  */
+
+
+ 
+// 3.1 Making a JS Clock part One
+
+const clockContainer = document.querySelector(".js-clock");
+const clockTitle = clockContainer.querySelector("h1");
+
+function getTime() {
+  const date = new Date();
+  const mintues = date.getMinutes();
+  const hours = date.getHours();
+  const seconds = date.getSeconds();
+  clockTitle.innerText = `${hours}:${mintues}:${seconds}`
+}
+
+function init() {
+  getTime()
+}
+
+init();
+
+// ↑↑↑↑↑↑↑↑↑↑↑↑↑再描画しないと更新されない
+
+
+
+
+// 3.2 Making a JS Clock part Two
+
+const clockContainer = document.querySelector(".js-clock");
+const clockTitle = clockContainer.querySelector("h1");
+
+function getTime() {
+  const date = new Date();
+  const mintues = date.getMinutes();
+  const hours = date.getHours();
+  const seconds = date.getSeconds();
+  clockTitle.innerText = `${hours < 10 ? `0${hours}` : hours }:${mintues < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
+}
+
+function formatNumber(number) {
+  if (number < 10) {
+    return `0${number}`;
+  } else {
+    return number
+  }
+}
+
+function init() {
+  getTime();
+  setInterval(gemTime, 1000); // 1秒
+}
+
+init();
+
+
