@@ -222,3 +222,101 @@ function init() {
 init();
 
 
+
+
+// #3.3 Saving the User Name part One
+
+const form = document.querySelector(".js-form");
+const input = form.querySelector("input");
+
+localStorage.setItem("key", "value"); // 保存
+
+localStorage.getItem("key"); // value
+
+localStorage.getItem("keyy"); // null
+
+const USER_LS = "currentUser";
+const SHOWING_CN = "showing";
+
+const greeting = document.querySelector("js-greeting");
+
+
+function paintGreeting(text) {
+  form.classList.remove(SHOWING_CN)
+  greeting.classList.add(SHOWING_CN)
+  greeting.innerText = `Hollo ${text}`
+}
+
+function loadName() {
+  const currentUser = localStorage.getItem(USER_LS);
+  if(currentUser === null) {
+    localStorage.setItem()
+  } else {
+    paintGreeting(currentUser)
+  }
+}
+
+function init() {
+  loadName();
+}
+
+init();
+// localStorageに追加・削除した値は、chormeの開発者ツール→アプリケーションに保存される
+// -> 再描画しても残ってる
+// -> localStorageはURL毎に動作する。
+
+// 3.4 Saving the User Name part Two
+
+
+const form = document.querySelector(".js-form");
+const input = form.querySelector("input");
+
+localStorage.setItem("key", "value"); // 保存
+
+localStorage.getItem("key"); // value
+
+localStorage.getItem("keyy"); // null
+
+const USER_LS = "currentUser";
+const SHOWING_CN = "showing";
+
+const greeting = document.querySelector("js-greeting");
+
+function saveName(text) {
+  localStorage.setItem(USER_LS, text);
+}
+
+function handleSubmit(event) {
+  event.preventDefault(); // submit後、再描画されるイベント禁止する
+  //plackholder変更 input.placeholder = ""
+  const currentValue = input.value; // input formに入力した値
+  paintGreeting(currentValue);
+  saveName(currentValue);
+}
+
+function askForName() {
+  form.classList.add(SHOWING_CN);
+  form.addEventListener("submit", handleSubmit)
+}
+
+
+function paintGreeting(text) {
+  form.classList.remove(SHOWING_CN)
+  greeting.classList.add(SHOWING_CN)
+  greeting.innerText = `Hollo ${text}`
+}
+
+function loadName() {
+  const currentUser = localStorage.getItem(USER_LS);
+  if (currentUser === null) {
+    askForName();
+  } else {
+    paintGreeting(currentUser)
+  }
+}
+
+function init() {
+  loadName();
+}
+
+init();
