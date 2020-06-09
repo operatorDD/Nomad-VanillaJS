@@ -6,8 +6,8 @@ const toDoForm = document.querySelector(".js-todo-form");
 const toDoInput = toDoForm.querySelector("input");
 const toDoPendingList = document.querySelector(".js-todo-pending-list");
 const toDoFinishedList = document.querySelector(".js-todo-finish-list");
-const PENDING_TODOS = "pending";
-const FINISHED_TODOS = "finished";
+const PENDING_TODOS = "PENDING";
+const FINISHED_TODOS = "FINISHED";
 
 let pendingToDos = [];
 let finishedToDos = [];
@@ -35,22 +35,32 @@ function deleteFinishedToDo(event) {
 function finishedToDo(event) {
   deletePendingToDo(event);
   const li = event.target.parentNode;
-  const delBtn = li.querySelector("#delete_button");
-  const backBtn = li.querySelector("#finish_button");
   const span = li.querySelector("span");
+
+  paintFinishedToDo(span.innerText);
+}
+
+function paintFinishedToDo(text) {
+  const li = document.createElement("li");
+  const delBtn = document.createElement("button");
+  const backBtn = document.createElement("button");
+  const span = document.createElement("span");
   const newId = Math.random()
     .toString(36)
     .substr(2, 9);
 
+  span.innerText = text;
+  delBtn.innerText = "❌";
   backBtn.innerText = "⏪";
-  delBtn.removeEventListener("click", deletePendingToDo);
-  backBtn.removeEventListener("click", finishedToDo);
   delBtn.addEventListener("click", deleteFinishedToDo);
   backBtn.addEventListener("click", backToPending);
+  li.appendChild(span);
+  li.appendChild(delBtn);
+  li.appendChild(backBtn);
 
   toDoFinishedList.appendChild(li);
   const toDoObj = {
-    text: span.innerText,
+    text: text,
     id: newId
   };
   li.id = newId;
@@ -82,14 +92,14 @@ function paintPendingToDo(text) {
     .toString(36)
     .substr(2, 9);
 
-  li.appendChild(span);
-  li.appendChild(delBtn);
-  li.appendChild(finishedBtn);
   span.innerText = text;
   delBtn.innerText = "❌";
   finishedBtn.innerText = "✅";
   delBtn.addEventListener("click", deletePendingToDo);
   finishedBtn.addEventListener("click", finishedToDo);
+  li.appendChild(span);
+  li.appendChild(delBtn);
+  li.appendChild(finishedBtn);
 
   li.id = newId;
   delBtn.id = "delete_button";
@@ -104,12 +114,22 @@ function paintPendingToDo(text) {
 }
 
 function loadToDos() {
-  const loadedToDos = localStorage.getItem(PENDING_TODOS);
-  console.log(loadedToDos);
-  if (loadedToDos !== null) {
-    const parsedToDos = JSON.parse(loadedToDos);
+  const loadedPendingToDos = localStorage.getItem(PENDING_TODOS);
+
+  if (loadedPendingToDos !== null) {
+    const parsedToDos = JSON.parse(loadedPendingToDos);
     parsedToDos.forEach(function (toDo) {
       paintPendingToDo(toDo.text);
+    });
+  }
+}
+
+function loadFinishedToDos() {
+  const loadedFinishedToDos = localStorage.getItem(FINISHED_TODOS);
+  if (loadedFinishedToDos !== null) {
+    const parsedToDos = JSON.parse(loadedFinishedToDos);
+    parsedToDos.forEach(function (toDo) {
+      paintFinishedToDo(toDo.text);
     });
   }
 }
@@ -123,6 +143,7 @@ function handleSubmit(event) {
 
 function init() {
   loadToDos();
+  loadFinishedToDos();
   toDoForm.addEventListener("submit", handleSubmit);
 }
 
