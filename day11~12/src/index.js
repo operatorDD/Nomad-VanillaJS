@@ -2,62 +2,79 @@
 import "./styles.css";
 // <⚠️ /DONT DELETE THIS ⚠️>
 
-let hidingNum = 0;
-let lastestInputNum = "";
-let viewingNum = "";
-
-let operator = "";
-
 const postSpan = document.querySelector("span");
 const numBtns = document.querySelectorAll(".number");
 const operatorBtns = document.querySelectorAll(".operator");
 const cancelBtn = document.querySelector(".cancel");
 
-function paintClickedNum(event) {
-  if (viewingNum.length < 1 && event.target.value === "0") {
-    return;
+const onlyNum = /^[0-9]+$/;
+let firstValue = [];
+let secondValue = [];
+let addedOperator = "";
+let calcEndwithEquals = false;
+
+function insertNum(value) {
+  firstValue = calcEndwithEquals ? [] : firstValue;
+  calcEndwithEquals = false;
+
+  if (addedOperator === "") {
+    firstValue.push(value);
+    postSpan.innerText = firstValue.join("");
   } else {
-    viewingNum += event.target.value;
-    lastestInputNum = viewingNum;
-    postSpan.innerText = viewingNum;
+    secondValue.push(value);
+    postSpan.innerText = secondValue.join("");
   }
 }
 
-function setOperator(event) {
-  const inputOperator = event.target.value;
-  if (inputOperator === "=") {
-    calcResult();
+function callOperator(operator) {
+  if (addedOperator !== "" && operator === "=") {
+    const result = calcResult();
+    postSpan.innerText = result;
+    firstValue = Array.from(String(result));
+    secondValue = [];
+    addedOperator = "";
+    calcEndwithEquals = true;
+  } else if (addedOperator !== "" && secondValue.length > 0) {
+    const result = calcResult();
+    postSpan.innerText = result;
+    firstValue = Array.from(String(result));
+    secondValue = [];
+    addedOperator = operator;
   } else {
-    hidingNum = viewingNum;
-    viewingNum = "";
-    operator = inputOperator;
+    addedOperator = operator === "=" ? "" : operator;
   }
 }
 
 function calcResult() {
-  const parsedLastInputNum = parseInt(lastestInputNum);
-  const parsedHidingNum = parseInt(hidingNum);
+  const firstNum = parseInt(firstValue.join(""));
+  const secondNum = parseInt(secondValue.join(""));
 
-  if (operator === "+") {
-    viewingNum = parsedLastInputNum + parsedHidingNum;
-  } else if (operator === "-") {
-    viewingNum = parsedLastInputNum - parsedHidingNum;
-  } else if (operator === "*") {
-    viewingNum = parsedLastInputNum * parsedHidingNum;
+  if (addedOperator === "+") {
+    return firstNum + secondNum;
+  } else if (addedOperator === "-") {
+    return firstNum - secondNum;
+  } else if (addedOperator === "*") {
+    return firstNum * secondNum;
   } else {
-    viewingNum = parseFloat(parsedLastInputNum) / parsedHidingNum;
+    return firstNum / parseFloat(secondNum);
   }
-  console.log("calc result = " + viewingNum);
-  hidingNum = viewingNum;
-  postSpan.innerText = viewingNum;
 }
 
-function resetAll() {
-  console.log("insert c");
-  hidingNum = "0";
-  viewingNum = "";
-  operator = "";
+function insertBtnValue(event) {
+  const inputValue = event.target.value;
+
+  if (onlyNum.test(inputValue)) {
+    insertNum(inputValue);
+  } else {
+    callOperator(inputValue);
+  }
+}
+
+function cancelCalc() {
   postSpan.innerText = 0;
+  firstValue = [];
+  secondValue = [];
+  addedOperator = "";
 }
 
 function addEventToBtns(btns, functionName) {
@@ -66,6 +83,6 @@ function addEventToBtns(btns, functionName) {
   }
 }
 
-addEventToBtns(numBtns, paintClickedNum);
-addEventToBtns(operatorBtns, setOperator);
-addEventToBtns([cancelBtn], resetAll);
+addEventToBtns(numBtns, insertBtnValue);
+addEventToBtns(operatorBtns, insertBtnValue);
+addEventToBtns([cancelBtn], cancelCalc);

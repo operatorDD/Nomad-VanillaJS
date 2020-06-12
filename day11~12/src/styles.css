@@ -1,3 +1,50 @@
+html,
+body {
+  height: 100%;
+}
+
 body {
   font-family: sans-serif;
+  display: table;
+  margin: 0 auto;
+}
+
+.container {
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+table {
+  margin: 0 auto;
+  border: 2px solid #000;
+  width: 400px;
+  border-radius: 5px;
+}
+
+td.result {
+  background-color: black;
+  color: white;
+  text-align: right;
+  padding-right: 10px;
+  border-radius: 5px;
+}
+
+table tr td input {
+  padding: 15px;
+  width: 100%;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+input.number {
+  background-color: darkgray;
+}
+
+input.cancel {
+  background-color: darkgray;
+}
+
+input.operator {
+  background-color: orange;
 }
