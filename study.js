@@ -395,3 +395,91 @@ init();
 
 
 
+
+// 3.8 Image Backgroud
+
+const body = document.querySelector("body");
+
+const IMG_NNUMBER = 3;
+
+function handleImgLoad() {
+  
+}
+
+function paintImage(imgNumber) {
+  const image = new Image();
+  imgNumber.src = `/images/${imgNumber + 1}.jpg`;
+  image.classList.add("bgImage")
+  body.prepend(image)
+  image.addEventListener("loadend", handleImgLoad) // APIだったらこれが必要
+}
+
+function genRandom() {
+  const number = Math.floor(Math.random() * IMG_NNUMBER)
+  return number
+}
+
+function init() {
+  const randomNumber = getRandom()
+  paintImage(randomNumber)
+}
+
+
+// 3.9  Getting the Weather part One
+// 3.10 Getting the Weather part Two
+
+const API_KEY = "fa36a223c5b33759a92a11ada6f57b20"
+const COORDS = "coords";
+
+function getWeather(lat, lng) {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=mertric`
+  ).then(function(json) {
+    console.log(json)
+  })
+}
+
+function saveCoords(coordsObj) {
+  localStorage.setItem("coords", coordsObj)
+}
+
+function handleGeoSucces(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.logitude;
+  // const coordsObj = {
+  //   latitude: latitude,
+  //   longitude: logitude
+  // }
+  // 上記と同じ
+  const coordsObj = {
+    latitude,
+    longitude
+  }
+  saveCoords(coordsObj)
+  getWeather(latitude, logitude)
+}
+
+function handleGeoError() {
+
+}
+
+function askForCoords() {
+  navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError)
+}
+
+function loadCoords() {
+  const loadedCoords = localStorage.getItem(COORDS)
+  if(loadedCoords === null) {
+    askForCords();
+  } else {
+    const parseCoords = JSON.parse(loadedCoords)
+    getWeather(parseCoords.latitude, parseCoords.longitude);
+  }
+}
+
+function init() {
+  loadCoords()
+}
+
+init()
+
